@@ -1,0 +1,17 @@
+[package]
+name = "jcgd"
+version = "0.1.0"
+authors = ["jantar1154 <davidbednarek@email.cz>"]
+edition = "2021"
+build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+image = "0.25.0"
+reqwest = { version = "0.11.27", features = ["blocking", "json"]}
+serde_json = "1.0.114"
+slint = "1.5.0"
+
+[build-dependencies]
+slint-build = "1.5.0"
