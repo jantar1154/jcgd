@@ -17,13 +17,20 @@ fn file_to_slint_img(img_path: &str, filename: &str) -> slint::Image {
 }
 
 
-fn get_random_id() -> Result<String, reqwest::Error> {
+fn get_random_id() -> String {
     let url = "https://nekos.moe/api/v1/random/image";
-    let resp: Value = blocking::get(url)?.json()?;
-    let image = &resp["images"][0];
+    let resp = match blocking::get(url) {
+        Ok(val) => val,
+        Err(err) => panic!("Did not receive a response from {}.\n{}", url, err),
+    };
+    let value: Value = match resp.json() {
+        Ok(val) => val,
+        Err(err) => panic!("Error while receiving JSON! {}", err),
+    };
+    let image = &value["images"][0];
     let id_val = &image["id"];
     let id = format!("{}", id_val).replace("\"", "");
-    Ok(id)
+    id
 }
 
 fn get_temp_path() -> String {
@@ -36,16 +43,14 @@ fn get_temp_path() -> String {
     temp_path.to_owned()
 }
 
-// Handles getting image from 
+// Handles getting image from https://nekos.moe
+// and setting the Image in uiw to the image
 pub(crate) fn fetch_new(uiw: &Weak<AppWindow>) {
     let uiw = uiw.upgrade().unwrap();
     
     let temp_file_name = "jcgd.jpeg";
     
-    let id = match get_random_id() {
-        Ok(id) => id,
-        Err(err) => panic!("Could not receive ID from nekos.moe!\n{}", err),
-    };
+    let id = get_random_id();
     
     // Use the ID to create a new link, which contains only a catgirl image
     let url = format!("https://nekos.moe/image/{}", id);
