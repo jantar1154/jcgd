@@ -2,7 +2,7 @@ import { Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
 
 component TopBar {
     callback fetch <=> fetch.clicked;
-    in property<string> url_text: "";
+    in property<string> status: "";
     height: 3rem;
     Rectangle {
         width: 100%;
@@ -12,15 +12,20 @@ component TopBar {
             alignment: start;
             fetch := Button {
                 text: "Fetch new catgirl";
+                primary: true;
             }
             Button {
                 text: "Download into computer";
+                primary: true;
             }
             Button {
                 text: "Copy to clipboard";
+                primary: true;
             }
             Text {
-                text: url_text;
+                text: status;
+                font-size: 36pt;
+                vertical-alignment: center;
                 color: red;
             }
         }
@@ -28,7 +33,6 @@ component TopBar {
 }
 
 component Catgirl {
-    // in property<string> catgirl_url: "";
     in property <image> img;
     width: 95%;
     height: 95%;
@@ -45,8 +49,7 @@ component Catgirl {
 
 export component AppWindow inherits Window {
     callback fetch <=> tb.fetch;
-    in property<string> url_text <=> tb.url_text;
-    // in property<string> catgirl_url <=> cg.catgirl_url;
+    in property<string> status <=> tb.status;
     in property<image> img <=> cg.img;
     title: "jantar1154's catgirl downloader!";
     min-width: 640px;
