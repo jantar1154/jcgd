@@ -12,9 +12,8 @@ fn main() -> Result<(), slint::PlatformError> {
         cg_fetch::fetch_new(&uiw);
     });
     
-    let uiw = ui.as_weak();
     ui.on_download(move || {
-        cg_download::download_catgirl(&uiw);
+        cg_download::download_catgirl();
     });
 
     let uiw = ui.as_weak();
@@ -24,7 +23,7 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let uiw = ui.as_weak();
     ui.on_info(move || {
-
+        
     });
 
     ui.run()

@@ -1,10 +1,6 @@
-use std::fmt::format;
-
-use crate::AppWindow;
-use slint::Weak;
 use dialog::DialogBox;
 
-pub(crate) fn download_catgirl(uiw: &Weak<AppWindow>) {
+pub(crate) fn download_catgirl() {
     // Open file dialog and get a path
     let save_dialog = dialog::FileSelection::new("Please select a file")
         .mode(dialog::FileSelectionMode::Save)
