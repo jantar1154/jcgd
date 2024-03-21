@@ -5,7 +5,10 @@ mod cg_fetch;
 mod cg_download;
 
 fn main() -> Result<(), slint::PlatformError> {
-    let ui = AppWindow::new()?;
+    let ui = match AppWindow::new() {
+        Ok(aw) => {aw},
+        Err(err) => {panic!("Slint error! {}", err)},
+    };
     
     let uiw = ui.as_weak();
     ui.on_fetch(move || {
@@ -23,7 +26,7 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let uiw = ui.as_weak();
     ui.on_info(move || {
-        
+
     });
 
     ui.run()
