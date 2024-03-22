@@ -3,10 +3,12 @@ import { Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
 component TopBar {
     callback fetch <=> fetch_btn.clicked;
     callback download <=> download_btn.clicked;
-    callback cp_to_clipboard <=> clipboard_btn.clicked;
     callback info <=> info_btn.clicked;
-    
-    in property<string> status: "";
+
+    in property <string> status: "";
+
+    // Whether to disable download and copy to clipboard buttons
+    in property <bool> enable_dn_cb: false;
 
     height: 3rem;
     Rectangle {
@@ -21,14 +23,12 @@ component TopBar {
             }
             download_btn := Button {
                 text: "Download into computer";
-                primary: true;
-            }
-            clipboard_btn := Button {
-                text: "Copy to clipboard";
+                enabled: enable_dn_cb;
                 primary: true;
             }
             info_btn := Button {
                 text: "Info";
+                enabled: enable_dn_cb;
                 primary: true;
             }
         }
@@ -54,11 +54,11 @@ component Catgirl {
 export component AppWindow inherits Window {
     callback fetch <=> tb.fetch;
     callback download <=> tb.download;
-    callback cp_to_clipboard <=> tb.cp_to_clipboard;
     callback info <=> tb.info;
 
-    in property<string> status <=> tb.status;
-    in property<image> img <=> cg.img;
+    in property <string> status <=> tb.status;
+    in property <image> img <=> cg.img;
+    in property <bool> enable_dn_cb <=> tb.enable_dn_cb;
 
     title: "jantar1154's catgirl downloader!";
     min-width: 640px;

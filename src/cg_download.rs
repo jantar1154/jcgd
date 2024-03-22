@@ -17,11 +17,15 @@ pub(crate) fn download_catgirl() {
 
     let temp_path = std::env::temp_dir();
     let from = match temp_path.to_str() {
-        Some(path) => {path},
-        None => {panic!("Could not locate temp directory!");},
+        Some(path) => path,
+        None => {
+            panic!("Could not locate temp directory!");
+        },
     };
-    match std::fs::copy(format!("{}/jcgd.jpeg", from), path) {
-        Ok(yay) => {yay},
-        Err(nay) => {panic!("Error copying catgirl to harddisk! {}", nay);},
+    match std::fs::copy(format!("{}/jcgd/jcgd.jpeg", from), path) {
+        Ok(yay) => yay,
+        Err(nay) => {
+            panic!("Error copying catgirl to harddisk! Did you delete the image from temp folder?\n{}", nay);
+        },
     };
 }
