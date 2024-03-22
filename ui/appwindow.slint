@@ -1,3 +1,5 @@
+import "./Montserrat-Regular.ttf";
+
 import { Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
 
 component TopBar {
@@ -60,6 +62,8 @@ export component AppWindow inherits Window {
     in property <image> img <=> cg.img;
     in property <bool> enable_dn_cb <=> tb.enable_dn_cb;
 
+    default-font-family: "Montserrat";
+    
     title: "jantar1154's catgirl downloader!";
     min-width: 640px;
     min-height: 480px;

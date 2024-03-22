@@ -1,6 +1,9 @@
+#![windows_subsystem = "windows"]
 use slint::ComponentHandle;
 
 slint::include_modules!();
+
+
 mod cg_fetch;
 mod cg_download;
 mod cg_info;

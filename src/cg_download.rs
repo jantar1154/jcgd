@@ -1,16 +1,16 @@
-use dialog::DialogBox;
+use rfd::FileDialog;
 
 pub(crate) fn download_catgirl() {
     // Open file dialog and get a path
-    let save_dialog = dialog::FileSelection::new("Please select a file")
-        .mode(dialog::FileSelectionMode::Save)
-        .title("Save catgirl as:")
-        .show()
-        .expect("Could not show a saving dialog");
+    let path = FileDialog::new()
+        .set_file_name("catgirl.jpeg")
+        .set_title("Select where to save your catgirl")
+        .add_filter("JPEG image", &["jpeg"])
+        .save_file();
 
     // If clicked close, function will end now,
     // otherwise copy the file from temp
-    let path = match save_dialog {
+    let path = match path {
         Some(str) => {str},
         None => {return;},
     };

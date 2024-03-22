@@ -1,6 +1,5 @@
 use std::{env::temp_dir, io::Read};
 
-use dialog::DialogBox;
 use serde_json::Value;
 
 pub fn display_info() {
@@ -9,10 +8,6 @@ pub fn display_info() {
     let mut json_file = match std::fs::File::open(tmp_dir) {
         Ok(json) => {json},
         Err(e) => {
-            dialog::Message::new(format!("Error loading JSON file.\n{}", e))
-            .title("oh no!")
-            .show()
-            .expect("Could not create dialog");
             return;
         },
     };
