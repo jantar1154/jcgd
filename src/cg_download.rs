@@ -3,7 +3,7 @@ use rfd::FileDialog;
 pub(crate) fn download_catgirl() {
     // Open file dialog and get a path
     let path = FileDialog::new()
-        .set_file_name("catgirl.jpeg")
+        .set_file_name("catgirl")
         .set_title("Select where to save your catgirl")
         .add_filter("JPEG image", &["jpeg"])
         .save_file();

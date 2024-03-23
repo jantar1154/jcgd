@@ -6,15 +6,15 @@ pub fn display_info() {
     let tmp_dir = format!("{}/jcgd/data.json", temp_dir().to_str().unwrap());
     // Load JSON
     let mut json_file = match std::fs::File::open(tmp_dir) {
-        Ok(json) => {json},
-        Err(e) => {
+        Ok(json) => json,
+        Err(_) => {
             return;
         },
     };
     let mut json_string: String = String::new();
     match json_file.read_to_string(&mut json_string) {
-        Ok(_) => {},
         Err(e) => {panic!("Error converting JSON file to string!\n{}", e)},
+        _ => {},
     };
     let json: Value = match serde_json::from_str(&json_string) {
         Ok(json) => json,

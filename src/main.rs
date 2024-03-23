@@ -10,7 +10,7 @@ mod cg_info;
 
 fn main() -> Result<(), slint::PlatformError> {
     let ui = match AppWindow::new() {
-        Ok(aw) => {aw},
+        Ok(window) => window,
         Err(err) => {panic!("Slint error! {}", err)},
     };
 
