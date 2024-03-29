@@ -1,6 +1,61 @@
 import "./Montserrat-Regular.ttf";
 
-import { Button, VerticalBox, HorizontalBox } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox, GridBox } from "std-widgets.slint";
+
+component CustomButton {
+    in property <color> color: whitesmoke;
+    in property <color> text-color: black;
+    in property <string> text: "";
+    property <color> hover_color: rgb(200, 200, 220); 
+    property <color> click_color: rgb(236, 111, 232); 
+
+    callback clicked();
+
+    states [
+        hover when ta.has-hover: {
+            rect.background: hover_color;
+            rect.drop-shadow-blur: 3px;
+            rect.drop-shadow-offset-x: 2px;
+            rect.drop-shadow-offset-y: 2px;
+        }
+        hovernt when !ta.has-hover: {
+            rect.background: color;
+            rect.drop-shadow-blur: 5px;
+            rect.drop-shadow-offset-x: 3px;
+            rect.drop-shadow-offset-y: 3px;
+        }
+
+        pressed when ta.pressed: {
+            rect.background: click_color;
+        }
+
+        released when !ta.pressed: {
+            rect.background: color;
+        }
+    ]
+
+    rect := Rectangle {
+        background: color;
+        padding: 5pt;
+        drop-shadow-blur: 5px;
+        drop-shadow-color: black;
+        drop-shadow-offset-x: 3px;
+        drop-shadow-offset-y: 3px;
+        GridBox {
+            padding: 5pt;
+            Text {
+                padding: 5pt;
+                font-family: "Montserrat";
+                color: text-color;
+                text: text;
+            }
+        }
+        ta := TouchArea {
+            clicked => {clicked()}
+            
+        }
+    }
+}
 
 component TopBar {
     callback fetch <=> fetch_btn.clicked;
@@ -19,19 +74,14 @@ component TopBar {
         background: gray;
         HorizontalBox {
             alignment: start;
-            fetch_btn := Button {
+            fetch_btn := CustomButton {
                 text: "Fetch new catgirl";
-                primary: true;
             }
-            download_btn := Button {
+            download_btn := CustomButton {
                 text: "Download into computer";
-                enabled: enable_dn_cb;
-                primary: true;
             }
-            info_btn := Button {
+            info_btn := CustomButton {
                 text: "Info";
-                enabled: enable_dn_cb;
-                primary: true;
             }
         }
     }
@@ -53,7 +103,7 @@ component Catgirl {
     }
 }
 
-export component AppWindow inherits Window {
+export component MainWindow inherits Window {
     callback fetch <=> tb.fetch;
     callback download <=> tb.download;
     callback info <=> tb.info;
@@ -71,7 +121,7 @@ export component AppWindow inherits Window {
     VerticalBox {
         y: 0;
         x: 0;
-        alignment: start;
+        alignment: stretch;
         tb := TopBar {}
         cg := Catgirl {}
     }

@@ -3,7 +3,7 @@ use rfd::FileDialog;
 pub(crate) fn download_catgirl() {
     // Open file dialog and get a path
     let path = FileDialog::new()
-        .set_file_name("catgirl")
+        .set_file_name("catgirl.jpeg")
         .set_title("Select where to save your catgirl")
         .add_filter("JPEG image", &["jpeg"])
         .save_file();
@@ -25,7 +25,10 @@ pub(crate) fn download_catgirl() {
     match std::fs::copy(format!("{}/jcgd/jcgd.jpeg", from), path) {
         Ok(yay) => yay,
         Err(nay) => {
-            panic!("Error copying catgirl to harddisk! Did you delete the image from temp folder?\n{}", nay);
+            println!("Error copying catgirl to harddisk!
+                Didn't you accidentaly delete the image from temp folder?\n{}",
+                nay);
+            return;
         },
     };
 }

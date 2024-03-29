@@ -1,8 +1,11 @@
+use crate::MainWindow;
 use std::{env::temp_dir, io::Read};
 
 use serde_json::Value;
+use slint::Weak;
 
-pub fn display_info() {
+pub fn display_info(uiw: &Weak<MainWindow>) {
+    let ui = uiw.upgrade().unwrap();
     let tmp_dir = format!("{}/jcgd/data.json", temp_dir().to_str().unwrap());
     // Load JSON
     let mut json_file = match std::fs::File::open(tmp_dir) {
@@ -21,9 +24,7 @@ pub fn display_info() {
         Err(e) => {panic!("Error parsing string to JSON!\n{}", e)},
     };
     let image = &json["images"][0];
-    let tags = &image["tags"];
-    for i in tags.as_array().unwrap() {
-        let tg = i.as_str().unwrap_or_default();
-        println!("{}", tg);
-    }
+    let _tags = &image["tags"];
+
+
 }

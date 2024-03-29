@@ -1,6 +1,6 @@
 use std::{env, fs::File, io::Write};
 
-use crate::AppWindow;
+use crate::MainWindow;
 use reqwest::blocking;
 use serde_json::Value;
 use slint::{SharedPixelBuffer, SharedString, Weak};
@@ -47,7 +47,7 @@ fn get_temp_path() -> String {
 
 // Handles getting image from https://nekos.moe
 // and setting the Image in uiw to the image
-pub(crate) fn fetch_new(uiw: &Weak<AppWindow>) {
+pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
     let uiw = uiw.upgrade().unwrap();
 
     uiw.set_enable_dn_cb(true);

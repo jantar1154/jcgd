@@ -3,13 +3,12 @@ use slint::ComponentHandle;
 
 slint::include_modules!();
 
-
 mod cg_fetch;
 mod cg_download;
 mod cg_info;
 
 fn main() -> Result<(), slint::PlatformError> {
-    let ui = match AppWindow::new() {
+    let ui = match MainWindow::new() {
         Ok(window) => window,
         Err(err) => {panic!("Slint error! {}", err)},
     };
@@ -23,9 +22,10 @@ fn main() -> Result<(), slint::PlatformError> {
         cg_download::download_catgirl();
     });
 
-    ui.on_info(move || {
-        cg_info::display_info();
-    });
+    // let uiw = ui.as_weak();
+    // ui.on_info(move || {
+    //     cg_info::display_info(&uiw);
+    // });
 
     ui.run()
 }
