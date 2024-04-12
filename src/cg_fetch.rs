@@ -1,6 +1,6 @@
-use std::{env, fs::File, io::Write, sync::Mutex, thread};
+use std::{env, fs::File, io::Write, sync::Mutex};
 
-use crate::AppWindow;
+use crate::MainWindow;
 use reqwest::blocking;
 use serde_json::Value;
 use slint::{SharedPixelBuffer, SharedString, Weak};
@@ -45,8 +45,8 @@ fn get_temp_path() -> String {
     temp_path.to_owned()
 }
 
-pub(crate) fn update_ui(uiw: &Mutex<Weak<AppWindow>>) {
-    let uiw = uiw.try_lock().unwrap().upgrade().unwrap();
+pub(crate) fn update_ui(uiw: &Weak<MainWindow>) {
+    let uiw = uiw.upgrade().unwrap();
     uiw.set_enable_dn_cb(true);
     let tmp_path = format!("{}/jcgd", get_temp_path());
     if !std::path::Path::new(&tmp_path).exists() {
