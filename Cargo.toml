@@ -1,6 +1,6 @@
 [package]
 name = "jcgd"
-version = "0.1.0"
+version = "0.1.2"
 authors = ["jantar1154 <davidbednarek@email.cz>"]
 edition = "2021"
 build = "build.rs"

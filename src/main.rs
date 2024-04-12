@@ -1,3 +1,5 @@
+use std::{sync::Mutex, thread};
+
 use slint::ComponentHandle;
 
 slint::include_modules!();
@@ -11,17 +13,24 @@ fn main() -> Result<(), slint::PlatformError> {
         Err(err) => {panic!("Slint error! {}", err)},
     };
 
-    let uiw = ui.as_weak();
+    let uiw = Mutex::new(ui.as_weak());
     ui.on_fetch(move || {
-        cg_fetch::fetch_new(&uiw);
+        thread::spawn(move || {
+            cg_fetch::fetch_new();
+        });
+        // cg_fetch::update_ui(&uiw);
     });
     
     ui.on_download(move || {
-        cg_download::download_catgirl();
+        thread::spawn(|| {
+            cg_download::download_catgirl();
+        });
     });
 
     ui.on_info(move || {
-        cg_info::display_info();
+        thread::spawn(|| {
+            cg_info::display_info();
+        });
     });
 
     ui.run()

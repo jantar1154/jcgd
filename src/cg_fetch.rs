@@ -1,4 +1,4 @@
-use std::{env, fs::File, io::Write};
+use std::{env, fs::File, io::Write, sync::Mutex, thread};
 
 use crate::AppWindow;
 use reqwest::blocking;
@@ -45,13 +45,25 @@ fn get_temp_path() -> String {
     temp_path.to_owned()
 }
 
+pub(crate) fn update_ui(uiw: &Mutex<Weak<AppWindow>>) {
+    let uiw = uiw.try_lock().unwrap().upgrade().unwrap();
+    uiw.set_enable_dn_cb(true);
+    let tmp_path = format!("{}/jcgd", get_temp_path());
+    if !std::path::Path::new(&tmp_path).exists() {
+        std::fs::create_dir(&tmp_path)
+            .unwrap();
+    }
+    let tmp_path = Mutex::new(tmp_path);
+    let tp = tmp_path.try_lock().unwrap();
+    let image = file_to_slint_img(&tp);
+    // Set the slint image as a source in .slint file
+    uiw.set_img(image);
+    uiw.set_status(SharedString::from(""));
+}
+
 // Handles getting image from https://nekos.moe
 // and setting the Image in uiw to the image
-pub(crate) fn fetch_new(uiw: &Weak<AppWindow>) {
-    let uiw = uiw.upgrade().unwrap();
-
-    uiw.set_enable_dn_cb(true);
-        
+pub(crate) fn fetch_new() {
     let json = get_random_id();
     
     // Use the ID to create a new link, which contains only a catgirl image
@@ -93,9 +105,4 @@ pub(crate) fn fetch_new(uiw: &Weak<AppWindow>) {
         .copy_to(&mut image_file)
         .unwrap();
 
-    let slint_image = file_to_slint_img(&tmp_path);
-
-    // Set the slint image as a source in .slint file
-    uiw.set_img(slint_image);
-    uiw.set_status(SharedString::from(""));
 }
