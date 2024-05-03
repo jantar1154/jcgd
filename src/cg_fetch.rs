@@ -1,7 +1,7 @@
-use std::{env, fs::File, io::Write};
+use std::{collections::HashMap, env, fs::File, hash::Hash, io::Write};
 
 use crate::MainWindow;
-use reqwest::blocking;
+use reqwest::blocking::{self, Client};
 use serde_json::Value;
 use slint::{SharedPixelBuffer, SharedString, Weak};
 
@@ -18,17 +18,27 @@ fn file_to_slint_img(img_path: &str) -> slint::Image {
     slint::Image::from_rgb8(slint_img)
 }
 
-
-fn get_random_id() -> (String, Value) {
+fn get_random_id(nsfw: bool) -> (String, Value) {
     let url = "https://nekos.moe/api/v1/random/image";
-    let resp = match blocking::get(url) {
+    
+    let client = Client::new();
+    
+    let mut query = HashMap::new();
+    query.insert("nsfw", nsfw);
+
+    let resp = match client
+        .get(url)
+        .query(&query)
+        .send() {
         Ok(val) => val,
         Err(err) => panic!("Did not receive a response from {}.\n{}", url, err),
     };
+
     let value: Value = match resp.json() {
         Ok(val) => val,
         Err(err) => panic!("Error while receiving JSON! {}", err),
     };
+
     let json = &value["images"][0];
     let id_val = &json["id"];
     let id = format!("{}", id_val).replace("\"", "");
@@ -52,7 +62,7 @@ pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
 
     uiw.set_enable_dn_cb(true);
 
-    let json = get_random_id();
+    let json = get_random_id(uiw.get_nsfw());
 
     // Use the ID to create a new link, which contains only a catgirl image
     let url = format!("https://nekos.moe/image/{}", json.0);

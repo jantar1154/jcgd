@@ -1,6 +1,6 @@
 import "./Montserrat-Regular.ttf";
 
-import { Button, VerticalBox, HorizontalBox, GridBox } from "std-widgets.slint";
+import { Button, VerticalBox, HorizontalBox, GridBox, CheckBox } from "std-widgets.slint";
 
 component CustomButton {
     in property <color> color: whitesmoke;
@@ -52,7 +52,6 @@ component CustomButton {
         }
         ta := TouchArea {
             clicked => {clicked()}
-            
         }
     }
 }
@@ -72,6 +71,7 @@ component TopBar {
     callback info <=> info_btn.clicked;
 
     in property <string> status: "";
+    in property <bool> nsfw <=> nsfw_check.checked;
 
     // Whether to disable download and copy to clipboard buttons
     in property <bool> enable_dn_cb: false;
@@ -91,6 +91,9 @@ component TopBar {
             }
             info_btn := CustomButton {
                 text: "Info";
+            }
+            nsfw_check := CheckBox {
+                text: "NSFW toggle";
             }
         }
     }
@@ -125,6 +128,7 @@ export component MainWindow inherits Window {
     in property <string> status <=> tb.status;
     in property <image> img <=> cg.img;
     in property <bool> enable_dn_cb <=> tb.enable_dn_cb;
+    out property <bool> nsfw <=> tb.nsfw;
 
     default-font-family: "Montserrat";
     
