@@ -403,19 +403,21 @@ dependencies = [
 
 [[package]]
 name = "async-process"
-version = "2.1.0"
+version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "451e3cf68011bd56771c79db04a9e333095ab6349f7e47592b788e9b98720cc8"
+checksum = "d999d925640d51b662b7b4e404224dd81de70f4aa4a199383c2c5e5b86885fa3"
 dependencies = [
  "async-channel",
  "async-io 2.3.2",
  "async-lock 3.3.0",
  "async-signal",
+ "async-task",
  "blocking",
  "cfg-if",
  "event-listener 5.2.0",
  "futures-lite 2.3.0",
  "rustix 0.38.31",
+ "tracing",
  "windows-sys 0.52.0",
 ]
 
@@ -2456,7 +2458,7 @@ checksum = "b1a46d1a171d865aa5f83f92695765caa047a9b4cbae2cbf37dbd613a793fd4c"
 
 [[package]]
 name = "jcgd"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = [
  "image 0.25.0",
  "reqwest",
@@ -5630,7 +5632,7 @@ dependencies = [
  "async-fs 2.1.1",
  "async-io 2.3.2",
  "async-lock 3.3.0",
- "async-process 2.1.0",
+ "async-process 2.2.0",
  "async-recursion",
  "async-task",
  "async-trait",

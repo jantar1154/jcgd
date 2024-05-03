@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env, fs::File, hash::Hash, io::Write};
+use std::{sync::Mutex, collections::HashMap, env, fs::File, hash::Hash, io::Write};
 
 use crate::MainWindow;
 use reqwest::blocking::{self, Client};
@@ -54,16 +54,11 @@ fn get_temp_path() -> String {
     };
     temp_path.to_string()
 }
-
 // Handles getting image from https://nekos.moe
 // and setting the Image in uiw to the image
-pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
-    let uiw = uiw.upgrade().unwrap();
-
-    uiw.set_enable_dn_cb(true);
-
-    let json = get_random_id(uiw.get_nsfw());
-
+pub(crate) fn fetch_new() {
+    let json = get_random_id();
+    
     // Use the ID to create a new link, which contains only a catgirl image
     let url = format!("https://nekos.moe/image/{}", json.0);
 
@@ -103,9 +98,4 @@ pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
         .copy_to(&mut image_file)
         .unwrap();
 
-    let slint_image = file_to_slint_img(&tmp_path);
-
-    // Set the slint image as a source in .slint file
-    uiw.set_img(slint_image);
-    uiw.set_status(SharedString::from(""));
 }

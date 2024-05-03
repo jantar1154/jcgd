@@ -1,4 +1,6 @@
-#![windows_subsystem = "windows"]
+use std::thread;
+
+// #![windows_subsystem = "windows"]
 use slint::ComponentHandle;
 
 slint::include_modules!();
@@ -15,13 +17,22 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let uiw = ui.as_weak();
     ui.on_fetch(move || {
-        cg_fetch::fetch_new(&uiw);
+        thread::spawn(move || {
+            cg_fetch::fetch_new();
+        });
+        cg_fetch::update_ui(&uiw);
     });
     
     ui.on_download(move || {
-        cg_download::download_catgirl();
+        thread::spawn(|| {
+            cg_download::download_catgirl();
+        });
     });
-
+    let uiw = ui.as_weak();
+    ui.on_info(move || {
+        cg_info::display_info(&uiw);
+    });
+  
     let uiw = ui.as_weak();
     ui.on_info(move || {
         cg_info::display_info(&uiw);
