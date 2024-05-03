@@ -42,7 +42,7 @@ fn get_temp_path() -> String {
         Some(path) => path,
         None => panic!("Could not find temp folder!"),
     };
-    temp_path.to_owned()
+    temp_path.to_string()
 }
 
 // Handles getting image from https://nekos.moe
@@ -51,9 +51,9 @@ pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
     let uiw = uiw.upgrade().unwrap();
 
     uiw.set_enable_dn_cb(true);
-        
+
     let json = get_random_id();
-    
+
     // Use the ID to create a new link, which contains only a catgirl image
     let url = format!("https://nekos.moe/image/{}", json.0);
 

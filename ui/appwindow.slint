@@ -57,6 +57,15 @@ component CustomButton {
     }
 }
 
+component SideBar {
+    width: 300px;
+    height: 100%;
+    Rectangle {
+        width: 100%;
+        background: gray;
+    }
+}
+
 component TopBar {
     callback fetch <=> fetch_btn.clicked;
     callback download <=> download_btn.clicked;
@@ -90,10 +99,15 @@ component TopBar {
 component Catgirl {
     in property <image> img;
 
-    width: 95%;
-    height: 95%;
     Rectangle {
         background: black;
+        Image {
+            width: 100%;
+            height: 100%;
+            source: img;
+            image-fit: cover;
+            opacity: 20%;
+        }
         Image {
             width: 100%;
             height: 100%;
@@ -119,10 +133,11 @@ export component MainWindow inherits Window {
     min-height: 480px;
     background: rgb(15, 20, 20);
     VerticalBox {
-        y: 0;
-        x: 0;
         alignment: stretch;
         tb := TopBar {}
-        cg := Catgirl {}
+        HorizontalBox {
+            cg := Catgirl {}
+            SideBar {}
+        }
     }
 }

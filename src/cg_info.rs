@@ -26,5 +26,5 @@ pub fn display_info(uiw: &Weak<MainWindow>) {
     let image = &json["images"][0];
     let _tags = &image["tags"];
 
-
+    println!("{:?}", _tags);
 }

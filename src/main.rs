@@ -22,5 +22,10 @@ fn main() -> Result<(), slint::PlatformError> {
         cg_download::download_catgirl();
     });
 
+    let uiw = ui.as_weak();
+    ui.on_info(move || {
+        cg_info::display_info(&uiw);
+    });
+
     ui.run()
 }
