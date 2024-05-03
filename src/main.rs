@@ -17,10 +17,7 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let uiw = ui.as_weak();
     ui.on_fetch(move || {
-        thread::spawn(move || {
-            cg_fetch::fetch_new();
-        });
-        cg_fetch::update_ui(&uiw);
+        cg_fetch::fetch_new(&uiw);
     });
     
     ui.on_download(move || {

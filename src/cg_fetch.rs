@@ -1,9 +1,9 @@
-use std::{sync::Mutex, collections::HashMap, env, fs::File, hash::Hash, io::Write};
+use std::{collections::HashMap, env, fs::File, io::Write};
 
 use crate::MainWindow;
 use reqwest::blocking::{self, Client};
 use serde_json::Value;
-use slint::{SharedPixelBuffer, SharedString, Weak};
+use slint::{SharedPixelBuffer, Weak};
 
 fn file_to_slint_img(img_path: &str) -> slint::Image {
     // Convert the file into rgb8 array and then the array into into slint::Image
@@ -56,8 +56,9 @@ fn get_temp_path() -> String {
 }
 // Handles getting image from https://nekos.moe
 // and setting the Image in uiw to the image
-pub(crate) fn fetch_new() {
-    let json = get_random_id();
+pub(crate) fn fetch_new(uiw: &Weak<MainWindow>) {
+    let ui = uiw.upgrade().unwrap();
+    let json = get_random_id(ui.get_nsfw());
     
     // Use the ID to create a new link, which contains only a catgirl image
     let url = format!("https://nekos.moe/image/{}", json.0);
@@ -97,5 +98,10 @@ pub(crate) fn fetch_new() {
         .unwrap()
         .copy_to(&mut image_file)
         .unwrap();
+
+    let slint_img = file_to_slint_img(&tmp_path);
+
+    // Set the slint image as a source in .slint file
+    ui.set_img(slint_img);
 
 }
